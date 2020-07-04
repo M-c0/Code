@@ -1,0 +1,22 @@
+//方法1
+int addDigits(int num){
+    int s = 0;
+    if(num<=9)
+    return num;
+    while(num)
+    {
+        s += num%10;
+        num /= 10;
+    }
+    return addDigits(s);
+}
+
+//方法2
+//X = 100*a + 10*b + c = 99*a + 9*b + (a+b+c)；所以对9取余即可。
+int addDigits(int num){
+    if(!num)//num = 0
+    return 0;
+    if(num%9==0)//num为 9 的倍数，除到最后结果为 9, num = 0也满足此条件!!!
+    return 9;
+    return num%9;
+}
