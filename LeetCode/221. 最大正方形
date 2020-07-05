@@ -1,0 +1,39 @@
+//暴力解法，把每个为"1"的位置看作正方形的左上角，然后每次加一行一列看是否全部为1.
+int maximalSquare(char** matrix, int matrixSize, int* matrixColSize){
+    int max = 0,t = 1;
+    int i,j,k,l,flag;
+    for(i = 0; i<matrixSize; i++)
+    {
+        for(j = 0; j<(*matrixColSize); j++)
+        {
+            if(matrix[i][j] == '1')
+            {
+                flag =1;
+                t = 1;
+                int min = matrixSize-i<(*matrixColSize)-j?matrixSize-i:(*matrixColSize)-j;//确定可能最大正方形的边界
+                for(k = 1; k<min; k++)//条件有问题，越界或溢出了(错误条件：k<matrixSize-i)
+                {
+                    if (matrix[i + k][j + k] == '0') 
+                    {
+                        break;
+                    }
+                    for(l = 0; l<k; l++)//可以 l<=k ，删去上面判断右下角位置的 if 但耗时增加。
+                    {
+                        if(matrix[i+k][j+l] == '0' || matrix[i+l][j+k] == '0')//每次增加一行一列判断是否全是"1"。
+                        {
+                            flag = 0;
+                            break;
+                        }
+                    }
+                    if(!flag)
+                    {
+                        break;
+                    }
+                    t++;
+                }
+               max = max>t?max:t;
+            }
+        }
+    }
+    return max*max;
+}
