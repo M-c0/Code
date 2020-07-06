@@ -1,0 +1,23 @@
+int romanToInt(char * s){
+    int i = 0,sum = 0;
+    int hash[92] ={0};
+        hash['I'] = 1;
+        hash['V'] = 5;
+        hash['X'] = 10;
+        hash['L'] = 50;
+        hash['C'] = 100;
+        hash['D'] = 500;
+        hash['M'] = 1000;
+    while(s[i]!='\0')
+    {
+        if( hash[s[i]] < hash[s[i+1]] )//hash[s[i] - 'A'] || hash[s[i+1]-'A'] 出错？？？干脆直接把 hash 数组大小弄到 65+26 ！
+        {
+            sum += hash[s[i+1]]-hash[s[i]];
+            i++;//s[i]和s[i+1]是一个数，再加一使它跳过
+        }
+        else
+        sum += hash[s[i]];
+        i++;
+    }
+    return sum;
+}
