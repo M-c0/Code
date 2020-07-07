@@ -1,0 +1,17 @@
+bool isAnagram(char * s, char * t){
+    int a[26] = {0},b[26] = {0},i;
+    for(i = 0; s[i]!='\0'; i++)
+    {
+        a[ s[i] - 'a' ]++;
+    }
+    for(i = 0; t[i]!='\0'; i++)
+    {
+        b[ t[i] - 'a' ]++;
+    }
+    for(i = 0; i<26; i++)
+    {
+        if(a[i] != b[i])
+        return false;
+    }
+    return true;
+}
