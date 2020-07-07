@@ -1,0 +1,20 @@
+//创建双表，用二维字符数组存储多个罗马数字组成的数字
+char * intToRoman(int num){
+    char *str = (char*)malloc(sizeof(char)*20),hash1[13][3] = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};//创建str字尽量大一点，以免溢出
+    int hash2[13] = {1000,900,500,400,100,90,50,40,10,9,5,4,1},i;
+    int ch[13] = {0};
+    memset(str, 0, 20*sizeof(char));
+    for(i = 0; i<13; i++)
+    {
+        ch[i] = num/hash2[i];//ch存储每一位的倍数
+        num %= hash2[i];
+    }
+    for(i = 0; i<13; i++)
+    {
+        while(ch[i]-- >0)
+        {
+            strcat(str,hash1[i]);
+        }
+    }
+    return str;
+}
