@@ -1,0 +1,26 @@
+void generateP(int l,int r,int n,char **result,int* returnSize,char *str,int index)
+{
+    if(r == n && l == n)//左右括号都匹配完(鸿沟)
+    {
+        result[(*returnSize)] = (char*)calloc((2*n+1),sizeof(char));//创建的数组大小要加1 ('\0')
+        strcpy(result[ (*returnSize)++ ],str);//(*returnSize)++  先使用再++
+        return ;//没有跳出递归，
+    }
+    if(l<n)//左括号小于n
+    {
+        str[index] = '(';
+        generateP(l+1,r,n,result,returnSize,str,index+1);
+    }
+    if(r<n && r<l)右括号必须小于左括号，否则不满足题目条件
+    {
+        str[index] = ')';
+        generateP(l,r+1,n,result,returnSize,str,index+1);
+    }
+}
+
+char ** generateParenthesis(int n, int* returnSize){
+    char *str = (char*)calloc((2*n+1),sizeof(char)),**result = (char**)malloc(sizeof(char*)*1430);//直接定义字符串数组会有溢出？？
+    *returnSize = 0;
+    generateP(0,0,n,result,returnSize,str,0);
+    return result;//直接用二维数组好像传递不了
+}
