@@ -1,0 +1,13 @@
+//本质是 26进制 问题
+int titleToNumber(char * s){
+    int hash[26],sum = 0,j = strlen(s);
+    for(int i = 0; i<26; i++)
+    {
+        hash[i] = i+1;
+    }
+    for(int i = 0; s[i]!='\0'; i++)
+    {
+        sum += hash[ s[i]-'A' ]*pow(26,--j);
+    }
+    return sum;
+}
