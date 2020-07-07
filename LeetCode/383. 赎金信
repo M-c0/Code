@@ -1,0 +1,19 @@
+bool canConstruct(char * ransomNote, char * magazine){
+    int hash1[26] = {0},hash2[26] = {0},i;
+    {
+        for(i = 0; ransomNote[i]!='\0'; i++)
+        {
+            hash1[ransomNote[i]-'a']++;
+        }
+        for(i = 0; magazine[i]!='\0'; i++)
+        {
+            hash2[magazine[i]-'a']++;
+        }
+        for(i = 0; i<26; i++)
+        {
+            if(hash1[i]>hash2[i])
+            return false;
+        }
+    }
+    return true;
+}
