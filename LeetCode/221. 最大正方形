@@ -37,3 +37,44 @@ int maximalSquare(char** matrix, int matrixSize, int* matrixColSize){
     }
     return max*max;
 }
+
+//动态规划
+//#define Min(x,y) (x)<(y)?(x):(y)//主要卡壳在这里，定义的函数这样使用 Min(Min(x,y),z) 为什么答案会出错？
+#define Max(a,b) (a)>(b)?(a):(b)
+
+int Min(int x , int y, int z){
+    x = x<y?x:y;
+    return x<z?x:z;
+}
+
+int maximalSquare(char** matrix, int matrixSize, int* matrixColSize){
+    if(matrixSize == 0 || *matrixColSize == 0)// 测试案例 ：[]
+    return 0;
+    int i,j,m = matrixSize,n = *matrixColSize,max = 0;
+    int **dp = (int**)malloc(sizeof(int*)*m);
+    for(i = 0; i<m; i++)
+    {
+        dp[i] = (int*)malloc(sizeof(int)*n);
+    }
+    for(i = 0; i<m; i++)
+    {
+        for(j = 0; j<n; j++)
+        {
+            if(matrix[i][j]=='0')//包括了i == 0 ||j == 0 && matrix[i][j]=='0'的情况，所以下面可以直接令dp[i][j] = 1,不需要考虑matrix[i][j]=='0'
+            {
+                dp[i][j] = 0;
+                continue;
+            }
+           else if(i==0 || j==0)
+           {
+               dp[i][j] = 1;
+           }
+           else
+           {
+               dp[i][j] = Min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;               
+           }
+           max = Max(dp[i][j],max);
+        }
+    }
+    return max*max;
+}
