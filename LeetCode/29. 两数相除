@@ -32,3 +32,23 @@ int divide(int dividend, int divisor){
         return -(i-1);
     }
 }
+//难理解，位运算
+int divide(int dividend, int divisor){
+    long int i,m = dividend,n = divisor,res;
+    if(dividend == -2147483648 && divisor == -1)
+    return 2147483647;
+    m = labs(m);//long int 的绝对值用 labs    intt用 abs
+    n = labs(n);//double 用 fabs
+    while (m >= n)
+    {
+		long int t = n, p = 1;
+		while (m >= (t << 1))//这里多一个 t<<1 为提前判断,m是否还大于除数当前倍数再*2
+        {
+			p <<= 1;//被除数>=（每次增加原来两倍的）除数，p就加与除数相对应的倍数（即p等于除数的增加的倍数）
+			t <<= 1;//每次左移一位，t = t*2
+		}
+		res += p;
+		m -= t;//每次被除数减去除数已经乘的倍数，代表剩余的<t
+	}
+    return (dividend<0&&divisor<0)?res:((dividend<0||divisor<0)?(-res):res);
+}
