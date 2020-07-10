@@ -7,7 +7,7 @@ char * intToRoman(int num){
     for(i = 0; i<13; i++)
     {
         ch[i] = num/hash2[i];//ch存储每一位的倍数
-        num %= hash2[i];
+        num %= hash2[i];//每次令num = 余数
     }
     for(i = 0; i<13; i++)
     {
