@@ -11,7 +11,7 @@ bool containsDuplicate(int* nums, int numsSize){
         /*
         for(j = i+1,k = numsSize-1; j<k; j++,k--)
         {
-            if(num[j] == nums[i] || nums[i] == nums[k])
+            if(nums[j] == nums[i] || nums[i] == nums[k])
             {
                 return true;
             }
