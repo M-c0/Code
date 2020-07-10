@@ -1,0 +1,23 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+ //不能用除法，创建两个数组，一个数组存储从左边开始每个数依次相乘的结果，一个存储从右边开始每个数依次相乘的结果
+int* productExceptSelf(int* nums, int numsSize, int* returnSize){
+    int i,j,l[numsSize],r[numsSize];
+    *returnSize = numsSize;
+    int *res = (int*)malloc(sizeof(int)*(*returnSize));
+    l[0] = 1,r[numsSize-1] = 1;
+    for(i = 1; i<numsSize; i++)
+    {
+        l[i] = l[i-1]*nums[i-1];//l[i] 存储的是前i-1个数相乘的结果
+    }
+    for(i = numsSize-2; i>=0; i--)
+    {
+        r[i] = r[i+1]*nums[i+1];
+    }
+    for(i = 0; i<numsSize; i++)
+    {
+        res[i] = l[i]*r[i];
+    }
+    return res;
+}
