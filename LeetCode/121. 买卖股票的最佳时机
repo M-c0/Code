@@ -1,0 +1,76 @@
+/*
+执行用时：
+1180 ms, 在所有 C 提交中击败了9.98%的用户
+内存消耗：
+6.3 MB, 在所有 C 提交中击败了100.00%
+*/
+int maxProfit(int* prices, int pricesSize){
+    int i,j,max = 0;
+    for(i = 0; i<pricesSize; i++)
+    {
+        for(j = i+1; j<pricesSize; j++)
+        {
+            if(prices[j]-prices[i]>max)
+            max = prices[j]-prices[i];
+        }
+    }
+    return max;
+}
+
+/*
+动态规划  前i天的最大收益 = max{前i-1天的最大收益，第i天的价格-前i-1天中的最小价格}
+记录【今天之前买入的最小值】
+计算【今天之前最小值买入，今天卖出的获利】，也即【今天卖出的最大获利】
+比较【每天的最大获利】，取最大值即可
+*/
+int maxProfit(int* prices, int pricesSize){
+    int i,j = prices[0],k = 0,l = 0;
+    if(!pricesSize)
+    return 0;
+    for(i = 0; i<pricesSize; i++)
+    {
+        k = prices[i] - j;//当天的最大收益
+        if(j>prices[i])
+        j = prices[i];//前 i-1 天的最低价
+        l = l>k?l:k;//前i-1天的最大收益
+    }
+    return l;
+}
+
+//hash   hash数组存放每个值的地址，下标为值，元素为地址
+//排序后，判断最大值和最小值的位置是否满足条件
+//只从最大值和最小值考虑，忽略了例如第二大的值和第二小的值满足条件的情----- 输入:[7,2,4,1]  输出 0  预期结果 2
+int cmp(const void *a,const void *b)
+{
+    return *(int*)a-*(int*)b;
+}
+
+int maxProfit(int* prices, int pricesSize){
+    int i,j,k,min,max,hash[1000];
+    if(!pricesSize)
+    return 0;
+    for(i = 0; i<pricesSize; i++)
+    {
+        hash[prices[i]] = i;
+    }
+    qsort(prices,pricesSize,sizeof(prices[0]),cmp);
+    max = prices[pricesSize-1],min = prices[0];
+    for(i = 0; i<pricesSize; i++)
+    {
+        if(hash[max]<hash[min])
+        {
+            min = prices[i];
+        }
+        else
+        break;
+    }
+    j = max-min;
+    i = pricesSize-1;
+    max = prices[pricesSize-1],min = prices[0];
+    while(hash[max]<hash[min])
+    {
+        max = prices[i--];
+    }
+    k = max-min;
+    return j>k?j:k;
+}
