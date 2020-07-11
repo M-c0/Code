@@ -17,7 +17,7 @@ int* productExceptSelf(int* nums, int numsSize, int* returnSize){
     }
     for(i = 0; i<numsSize; i++)
     {
-        res[i] = l[i]*r[i];
+        res[i] = l[i]*r[i];//除第i个位置剩余数组元素相乘即 l[i] * r[i]
     }
     return res;
 }
