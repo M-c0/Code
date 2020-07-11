@@ -9,5 +9,5 @@ int removeElement(int* nums, int numsSize, int val){
         if(nums[i] != val)
         nums[j++] = nums[i];
     }
-    return j;
+    return j;//返回除去等于val的值的数组剩余长度（由于 j 从0开始，输出的时候范围也是 0 - j-1，所以不需要-1）
 }
