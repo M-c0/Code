@@ -11,7 +11,7 @@ int numTrees(int n){
     {
         for(j = 0; j<i; j++)
         {
-            a[i] += a[j]*a[i-j-1];
+            a[i] += a[j]*a[i-j-1];//a[i]为以i为根节点二叉树的种类，a[j]位左子树的种类，a[i-j-1]为右子树的种类
         }
     }
     return a[n];
