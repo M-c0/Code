@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+//要注意平衡二叉树是要求每个结点的左子树和右子树高度之差不超过 1
+#define Max(x,y) x>y?x:y
+
+int max;
+void dfs(struct TreeNode* node,int s)
+{
+    if(node == NULL)  //   !node 和 node == NULL 有区别
+    return ;
+    max = Max(max,s);
+    dfs(node->left,s+1);
+    dfs(node->right,s+1);
+}
+
+bool visit(struct TreeNode *n)
+{
+    if(n == NULL)
+    return true;
+    max = 0;
+    dfs(n->left,1);
+    int l = max;
+    max = 0;
+    dfs(n->right,1);
+    if(max-l>1 || max-l<-1)
+    return false;
+    if( !visit(n->left) )
+    return false;
+    if( !visit(n->right) )
+    return false;
+    return true;
+}
+
+bool isBalanced(struct TreeNode* root){
+    //if(!root)
+    //return true;
+    if(!visit(root))
+    return false;
+    else
+    return true;
+}
