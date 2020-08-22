@@ -1,0 +1,23 @@
+int countSubstrings(char * s){
+    int i,j,k = 0;
+    int dp[1000][1000];
+    memset(dp,0,sizeof(dp));
+    /*
+    dp[i][j] 表示 i 到 j 的字符是否为回文子串（从左往右和从右往左都是一样的）
+    注意，外层循环要倒着写，内层循环要正着写
+    因为要求dp[i][j] 需要知道dp[i+1][j-1]
+    */
+    for(i = strlen(s)-1; i >= 0; i--)
+    {
+        k++;
+        for(j = i+1; s[j]!='\0'; j++)
+        {
+            if(s[i] == s[j] && (dp[i+1][j-1] || j-i<=2))//s[i] == s[j]，当元素个数为1,2,3个时，一定为回文子串
+            {
+                dp[i][j] = 1;
+                k++;
+            }
+        }
+    }
+    return k;
+}
