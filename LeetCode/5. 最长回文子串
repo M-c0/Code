@@ -1,0 +1,37 @@
+//动态规划，先找回文子串，再判断最长的回文子串
+//勉强通过，差点超时
+char * longestPalindrome(char * s){
+    if(strlen(s)<2)
+        return s;
+    char *str = (char*)malloc(sizeof(char)*1005);
+    int i,j,k,l = -1;
+    int dp[1000][1000];
+    memset(dp,0,sizeof(dp));
+    for(i = strlen(s)-1; i>=0; i--)
+    {
+        dp[i][i] = 1;
+        for(j = i+1; j<=strlen(s)-1; j++)
+        {
+            if(s[i] == s[j] && (dp[i+1][j-1] || j-i<=2))
+            {
+                dp[i][j] = 1;
+            }
+        }
+    }
+    for(i = 0; i<strlen(s); i++)
+    {
+        for(j = i; j<strlen(s); j++)
+        {
+            if(dp[i][j] && l<j-i)
+            {
+                l = j-i;
+                for(k = 0; k<=l; k++)
+                {
+                    str[k] = s[i+k];
+                }
+                str[k] = '\0';
+            }
+        }
+    }
+    return str;
+}
