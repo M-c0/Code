@@ -1,0 +1,18 @@
+bool repeatedSubstringPattern(char * s){
+    if(s == NULL)
+    return true;
+    int i,j,len = strlen(s);
+    for(i = 1; i<=len/2; i++)//子串长度
+    {
+        if(len%i!=0)
+        continue;
+        for(j = 0; j<len; j++)
+        {
+            if(s[j] != s[j%i])
+            break;
+        }
+        if(j == len)
+        return true;
+    }
+    return false;
+}
