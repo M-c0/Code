@@ -1,0 +1,70 @@
+/*
+方法一：二进制枚举 + 哈希
+思路与算法
+我们可以采取最朴素的思路，即枚举出所有的子序列，然后判断当前的子序列是否是非严格递增的。那么我们可以用什么办法来枚举所有的子序列呢？
+我们需要从原序列中选出一些数，来形成新的序列，即原序列的子序列。对于原序列的每一个数来说，都有两种可能的状态，即被选中或者不被选中。
+如果我们用 1 代表被选中，0 代表不被选中，假设一个序列长度为 3，那么选出的子序列就对应着下面的八种状态：
+[0,0,0]
+[0,0,1]
+[0,1,0]
+[0,1,1]
+[1,0,0]
+[1,0,1]
+[1,1,0]
+[1,1,1]
+由此可见长度为 n 的序列选择子序列一共会有 2^{n} 种情况，这 2^{n} 中情况就是区间 [0， 2^{n - 1}] 的所有整数的二进制表示。
+我们可以枚举区间 [0， 2^{n - 1}] 中的每一个数，然后对它做二进制数位拆分，我们会得到一个 0/1 序列，
+接着可以构造出这个 0/1 序列对应的子序列，然后再检查这个序列是否是非严格递增的。
+
+函数原型
+void *memcpy(void *destin, void *source, unsigned n);
+参数
+destin-- 指向用于存储复制内容的目标数组，类型强制转换为 void* 指针。
+source-- 指向要复制的数据源，类型强制转换为 void* 指针。
+n-- 要被复制的字节数。
+*/
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+// D F S
+int **ans;
+int ansSize;
+int *temp;
+int tempSize;
+
+void dfs(int cur, int last, int *nums, int numsSize, int **returnColumnSizes)
+{
+    if(cur == numsSize)
+    {
+        if(tempSize>=2)
+        {
+            ans[ansSize] = (int*)malloc(sizeof(int) * tempSize);
+            memcpy(ans[ansSize], temp, sizeof(int)*tempSize);//memcpy  内存拷贝函数
+            (*returnColumnSizes)[ansSize++] = tempSize;//每一个结果的长度
+        }
+        return;
+    }
+    if(nums[cur] >= last)
+    {
+        temp[tempSize++] = nums[cur];
+        dfs(cur + 1, nums[cur], nums, numsSize, returnColumnSizes);
+        tempSize--;
+    }
+    if(nums[cur] != last)
+    {
+        dfs(cur + 1, last, nums, numsSize, returnColumnSizes);
+    }
+}
+
+int** findSubsequences(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    ans = (int**)malloc(sizeof(int*)*32768);
+    *returnColumnSizes = (int*)malloc(sizeof(int*)*32768);
+    temp = malloc(sizeof(int) * numsSize);
+    ansSize = tempSize = 0;
+    dfs(0, INT_MIN, nums, numsSize, returnColumnSizes);
+    *returnSize = ansSize;
+    return ans;
+}
