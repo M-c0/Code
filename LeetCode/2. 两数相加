@@ -1,0 +1,149 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+//测试案例是对的，但提交后同样的案例，结果不一样？？
+int i = 0;
+void visit(struct ListNode *p,int a[])
+{
+    if(p == NULL)
+    return ;
+    //struct ListNode *L = p;
+    a[i++] = p->val;
+    visit(p->next,a);
+}
+
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    int a[1000],b[1000],c[1000],j,k,t,n;
+    memset(a,0,sizeof(a));
+    memset(b,0,sizeof(b));
+    memset(c,0,sizeof(c));
+    visit(l1,a);
+    n = i;
+    i = 0;
+    visit(l2,b);
+    for(j = 0; j<(n>i?n:i); j++)
+    {
+        c[j] += a[j]+b[j];
+        c[j+1] = c[j]/10;
+        c[j] %= 10;
+    }
+    if(c[j] != 0)//判断最后一位是否进位，如果进位则把输出的范围加一
+        j++;
+    struct ListNode *head,*p1,*p2;
+    head = (struct ListNode *)malloc(sizeof(struct ListNode));
+    head->val = c[0];
+    head->next = NULL;
+    p2 = head;
+    for(k = 1; k<j; k++)
+    {
+        p1 = (struct ListNode *)malloc(sizeof(struct ListNode));
+        p1->val = c[k];
+        p1->next = NULL;
+        p2->next = p1;
+        p2 = p1;
+    }
+    return head;
+}
+
+
+//按两个链表的长度分三种情况，太死板了。
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    struct ListNode* p1 = l1;
+    struct ListNode* p2 = l2;
+    int len1 = 0,len2 = 0,i,k;
+    while(p1 != NULL)
+    {
+        p1 = p1->next;
+        len1++;
+    }
+    while(p2 != NULL)
+    {
+        p2 = p2->next;
+        len2++;
+    }
+    p1 = l1,p2 = l2;
+    k = 0;
+    if(len1 > len2)
+    {
+        while(p2 != NULL)
+        {
+            p1->val += p2->val + k;
+            k = p1->val / 10;
+            p1->val %= 10;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        while(p1->next != NULL)
+        {
+            p1->val += k;
+            k = p1->val/10;
+            p1->val %= 10;
+            p1 = p1->next;
+        }
+        p1->val += k;
+        k = p1->val/10;
+        p1->val %= 10;
+        if(k>0)
+        {
+            struct ListNode *p = (struct ListNode*)malloc(sizeof(struct ListNode));
+            p->val = k;
+            p->next = NULL;
+            p1->next = p;
+        }
+        return l1;
+    }
+    else if(len1 == len2)
+    {
+        while(p2 != NULL)
+        {
+            p1->val += p2->val + k;
+            k = p1->val / 10;
+            p1->val %= 10;
+            if(p2->next != NULL)
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        if(k>0)
+        {
+            struct ListNode *p = (struct ListNode*)malloc(sizeof(struct ListNode));
+            p->val = k;
+            p->next = NULL;
+            p1->next = p;
+        }
+        return l1;
+    }
+    else
+    {
+        while(p1 != NULL)
+        {
+            p2->val += p1->val + k;
+            k = p2->val / 10;
+            p2->val %= 10;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        while(p2->next != NULL)
+        {
+            p2->val += k;
+            k = p2->val/10;
+            p2->val %= 10;
+            p2 = p2->next;
+        }
+        p2->val += k;
+        k = p2->val/10;
+        p2->val %= 10;
+        if(k>0)
+        {
+            struct ListNode *p = (struct ListNode*)malloc(sizeof(struct ListNode));
+            p->val = k;
+            p->next = NULL;
+            p2->next = p;
+        }
+        return l2;
+    }
+}
