@@ -1,0 +1,81 @@
+/*
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+ 
+
+示例 1：
+
+输入：s = "()"
+输出：true
+示例 2：
+
+输入：s = "()[]{}"
+输出：true
+示例 3：
+
+输入：s = "(]"
+输出：false
+示例 4：
+
+输入：s = "([)]"
+输出：false
+示例 5：
+
+输入：s = "{[]}"
+输出：true
+ 
+
+提示：
+
+1 <= s.length <= 104
+s 仅由括号 '()[]{}' 组成
+*/
+bool judge(char c1,char c2)
+{
+    if(c1 == '(' && c2 == ')' || (c1 == '[' && c2 == ']') || (c1 == '{' && c2 == '}'))
+        return true;
+    return false;
+}
+
+bool isValid(char * s){
+    int n = strlen(s);
+    char *stk = (char*)malloc(sizeof(char)*n);
+    int k = 0;
+    for(int i = 0; i<n; i++)
+    {
+        if(k>0 && judge(stk[k-1],s[i]))
+            k--;
+        else
+            stk[k++] = s[i];
+    }
+    if(k == 0)
+        return true;
+    return false;
+}
+C++----------------------------------------------------------------------------------------------------------------
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
+        for(int i = 0; i<s.size(); i++)
+        {
+            if(s[i] == '(')
+                st.push(')');
+            else if(s[i] == '[')
+                st.push(']');
+            else if(s[i] == '{')
+                st.push('}');
+            else if(!st.empty() && st.top() == s[i])
+                st.pop();
+            else
+                return false;
+        }
+        if(!st.empty())
+            return false;
+        return true;
+    }
+};
