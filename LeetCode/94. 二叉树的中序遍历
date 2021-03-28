@@ -76,7 +76,21 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize){
 
 /*
 迭代---------------------------------------------------------------------
-*/
+*//**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+
 int* inorderTraversal(struct TreeNode* root, int* returnSize){
     *returnSize = 0;
     if(root == NULL)
@@ -88,14 +102,14 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize){
     int k = 0;
     while(root!=NULL||k>0)
     {
-        while(root!=NULL)
+        while(root!=NULL)//遍历左子节点
         {
             stk[k++] = root;
             root = root->left;
         }
-        root = stk[--k];
+        root = stk[--k];//中子结点
         ret[(*returnSize)++] = root->val;
-        root = root->right;
+        root = root->right;//右子结点
     }
     return ret;
 }
