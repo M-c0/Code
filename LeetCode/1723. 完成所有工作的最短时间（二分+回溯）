@@ -1,0 +1,76 @@
+/*
+给你一个整数数组 jobs ，其中 jobs[i] 是完成第 i 项工作要花费的时间。
+
+请你将这些工作分配给 k 位工人。所有工作都应该分配给工人，且每项工作只能分配给一位工人。工人的 工作时间 是完成分配给他们的所有工作花费时间的总和。请你设计一套最佳的工作分配方案，使工人的 最大工作时间 得以 最小化 。
+
+返回分配方案中尽可能 最小 的 最大工作时间 。
+
+ 
+
+示例 1：
+
+输入：jobs = [3,2,3], k = 3
+输出：3
+解释：给每位工人分配一项工作，最大工作时间是 3 。
+示例 2：
+
+输入：jobs = [1,2,4,7,8], k = 2
+输出：11
+解释：按下述方式分配工作：
+1 号工人：1、2、8（工作时间 = 1 + 2 + 8 = 11）
+2 号工人：4、7（工作时间 = 4 + 7 = 11）
+最大工作时间是 11 。
+ 
+
+提示：
+
+1 <= k <= jobs.length <= 12
+1 <= jobs[i] <= 107
+*/
+class Solution {
+public:
+
+    bool backtrack(vector<int>& jobs, vector<int>& workloads, int idx, int limit){
+        if(idx >= jobs.size())
+            return true;
+        int cur = jobs[idx];//获取当前任务的时间
+        for(auto& workload : workloads)//遍历每一个工人，分配第idx个任务
+        {
+            if(workload + cur <= limit)//如果当前工人的工作任务时间加上第idx个任务，仍没有超过上限
+            {
+                workload += cur;
+                if(backtrack(jobs, workloads, idx+1, limit))//继续分配下一个任务
+                {
+                    return true;
+                }
+                workload -= cur;//分配不成功，第idx个任务分配给下一个工人
+            }
+            if(workload == 0 || workload + cur == limit)//如果当前工人没有分任务，那么下一个也无法分配，或者当前工人分配了该任务恰好达到上限，继续分配下一个任务都分配不成功，那么把该任务分配给后面的人更加不行。
+            {
+                break;
+            }
+        }
+        return false;
+    }
+
+    bool check(vector<int>& jobs, int k, int limit){
+        vector<int> workloads(k, 0);//记录每个工人当前要完成的工作的总时间
+        return backtrack(jobs, workloads, 0, limit);
+    }
+
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        sort(jobs.begin(), jobs.end(), greater<int>());//排序，从大到小，优先处理时间大的工作任务
+        int l = jobs[0], r = accumulate(jobs.begin(), jobs.end(), 0);
+        while(l<r)
+        {
+            int mid = (l+r)>>1;//二分来获得最小的最大工作时间
+            if(check(jobs, k, mid))
+            {
+                r = mid;
+            }
+            else
+                l = mid+1;
+        }
+        return l;
+    }
+};
